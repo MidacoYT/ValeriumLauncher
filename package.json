@@ -1,7 +1,7 @@
 {
-  "name": "helioslauncher",
+  "name": "valeriumlauncher",
   "version": "2.2.1",
-  "productName": "Helios Launcher",
+  "productName": "Valerium Launcher",
   "description": "Modded Minecraft Launcher",
   "author": "Daniel Scalzi (https://github.com/dscalzi/)",
   "license": "UNLICENSED",
@@ -46,6 +46,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dscalzi/HeliosLauncher.git"
+    "url": "git+https://github.com/MidacoYT/ValeriumLauncher.git"
   }
 }
