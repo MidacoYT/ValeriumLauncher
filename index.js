@@ -130,7 +130,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
         width: 520,
         height: 600,
         frame: true,
-        icon: getPlatformIcon('SealCircle')
+        icon: getPlatformIcon('icon')
     })
 
     msftAuthWindow.on('closed', () => {
@@ -183,7 +183,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
         width: 520,
         height: 600,
         frame: true,
-        icon: getPlatformIcon('SealCircle')
+        icon: getPlatformIcon('icon')
     })
 
     msftLogoutWindow.on('closed', () => {
@@ -229,11 +229,12 @@ function createWindow() {
     win = new BrowserWindow({
         width: 1280,
         height: 720,
-        icon: getPlatformIcon('SealCircle'),
-        center: true,
+        icon: getPlatformIcon('icon'),
         frame: false,
         resizable: false,
-        thickFrame: false,
+        fullscreen: false,
+        center: true,
+        maximizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
             nodeIntegration: true,
