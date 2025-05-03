@@ -24,18 +24,15 @@ const logger = LoggerUtil.getLogger('ProcessBuilder')
 class ProcessBuilder {
 
     constructor(distroServer, vanillaManifest, modManifest, authUser, launcherVersion){
-        this.gameDir = path.join(ConfigManager.getInstanceDirectory(), distroServer.rawServer.id)
+        this.gameDir = path.join(ConfigManager.getInstanceDirectory())
         this.commonDir = ConfigManager.getCommonDirectory()
         this.server = distroServer
         this.vanillaManifest = vanillaManifest
         this.modManifest = modManifest
         this.authUser = authUser
         this.launcherVersion = launcherVersion
-        this.forgeModListFile = path.join(this.gameDir, 'forgeMods.list') // 1.13+
-        this.fmlDir = path.join(this.gameDir, 'forgeModList.json')
         this.llDir = path.join(this.gameDir, 'liteloaderModList.json')
         this.libPath = path.join(this.commonDir, 'libraries')
-
         this.usingLiteLoader = false
         this.usingFabricLoader = false
         this.llPath = null
@@ -54,22 +51,8 @@ class ProcessBuilder {
         logger.info('Using fabric loader:', this.usingFabricLoader)
         const modObj = this.resolveModConfiguration(ConfigManager.getModConfiguration(this.server.rawServer.id).mods, this.server.modules)
         
-        // Mod list below 1.13
-        // Fabric only supports 1.14+
-        if(!mcVersionAtLeast('1.13', this.server.rawServer.minecraftVersion)){
-            this.constructJSONModList('forge', modObj.fMods, true)
-            if(this.usingLiteLoader){
-                this.constructJSONModList('liteloader', modObj.lMods, true)
-            }
-        }
-        
         const uberModArr = modObj.fMods.concat(modObj.lMods)
         let args = this.constructJVMArguments(uberModArr, tempNativePath)
-
-        if(mcVersionAtLeast('1.13', this.server.rawServer.minecraftVersion)){
-            //args = args.concat(this.constructModArguments(modObj.fMods))
-            args = args.concat(this.constructModList(modObj.fMods))
-        }
 
         // Hide access token
         const loggableArgs = [...args]
@@ -243,88 +226,6 @@ class ProcessBuilder {
         return true
     }
 
-    /**
-     * Construct a mod list json object.
-     * 
-     * @param {'forge' | 'liteloader'} type The mod list type to construct.
-     * @param {Array.<Object>} mods An array of mods to add to the mod list.
-     * @param {boolean} save Optional. Whether or not we should save the mod list file.
-     */
-    constructJSONModList(type, mods, save = false){
-        const modList = {
-            repositoryRoot: ((type === 'forge' && this._requiresAbsolute()) ? 'absolute:' : '') + path.join(this.commonDir, 'modstore')
-        }
-
-        const ids = []
-        if(type === 'forge'){
-            for(let mod of mods){
-                ids.push(mod.getExtensionlessMavenIdentifier())
-            }
-        } else {
-            for(let mod of mods){
-                ids.push(mod.getMavenIdentifier())
-            }
-        }
-        modList.modRef = ids
-        
-        if(save){
-            const json = JSON.stringify(modList, null, 4)
-            fs.writeFileSync(type === 'forge' ? this.fmlDir : this.llDir, json, 'UTF-8')
-        }
-
-        return modList
-    }
-
-    // /**
-    //  * Construct the mod argument list for forge 1.13
-    //  * 
-    //  * @param {Array.<Object>} mods An array of mods to add to the mod list.
-    //  */
-    // constructModArguments(mods){
-    //     const argStr = mods.map(mod => {
-    //         return mod.getExtensionlessMavenIdentifier()
-    //     }).join(',')
-
-    //     if(argStr){
-    //         return [
-    //             '--fml.mavenRoots',
-    //             path.join('..', '..', 'common', 'modstore'),
-    //             '--fml.mods',
-    //             argStr
-    //         ]
-    //     } else {
-    //         return []
-    //     }
-        
-    // }
-
-    /**
-     * Construct the mod argument list for forge 1.13 and Fabric
-     * 
-     * @param {Array.<Object>} mods An array of mods to add to the mod list.
-     */
-    constructModList(mods) {
-        const writeBuffer = mods.map(mod => {
-            return this.usingFabricLoader ? mod.getPath() : mod.getExtensionlessMavenIdentifier()
-        }).join('\n')
-
-        if(writeBuffer) {
-            fs.writeFileSync(this.forgeModListFile, writeBuffer, 'UTF-8')
-            return this.usingFabricLoader ? [
-                '--fabric.addMods',
-                `@${this.forgeModListFile}`
-            ] : [
-                '--fml.mavenRoots',
-                path.join('..', '..', 'common', 'modstore'),
-                '--fml.modLists',
-                this.forgeModListFile
-            ]
-        } else {
-            return []
-        }
-
-    }
-
     _processAutoConnectArg(args){
         if(ConfigManager.getAutoConnect() && this.server.rawServer.autoconnect){
             if(mcVersionAtLeast('1.20', this.server.rawServer.minecraftVersion)){
@@ -372,7 +273,7 @@ class ProcessBuilder {
 
         // Java Arguments
         if(process.platform === 'darwin'){
-            args.push('-Xdock:name=HeliosLauncher')
+            args.push('-Xdock:name=ValeriumLauncher')
             args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
@@ -423,7 +324,7 @@ class ProcessBuilder {
 
         // Java Arguments
         if(process.platform === 'darwin'){
-            args.push('-Xdock:name=HeliosLauncher')
+            args.push('-Xdock:name=ValeriumLauncher')
             args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
@@ -525,7 +426,7 @@ class ProcessBuilder {
                             val = args[i].replace(argDiscovery, tempNativePath)
                             break
                         case 'launcher_name':
-                            val = args[i].replace(argDiscovery, 'Helios-Launcher')
+                            val = args[i].replace(argDiscovery, 'Valerium-Launcher')
                             break
                         case 'launcher_version':
                             val = args[i].replace(argDiscovery, this.launcherVersion)
@@ -622,16 +523,7 @@ class ProcessBuilder {
             mcArgs.push('--height')
             mcArgs.push(ConfigManager.getGameHeight())
         }
-        
-        // Mod List File Argument
-        mcArgs.push('--modListFile')
-        if(this._lteMinorVersion(9)) {
-            mcArgs.push(path.basename(this.fmlDir))
-        } else {
-            mcArgs.push('absolute:' + this.fmlDir)
-        }
-        
-
+    
         // LiteLoader
         if(this.usingLiteLoader){
             mcArgs.push('--modRepo')

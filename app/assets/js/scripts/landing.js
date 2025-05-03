@@ -127,12 +127,6 @@ document.getElementById('launch_button').addEventListener('click', async e => {
     }
 })
 
-// Bind settings button
-document.getElementById('settingsMediaButton').onclick = async e => {
-    await prepareSettings()
-    switchView(getCurrentView(), VIEWS.settings)
-}
-
 // Bind avatar overlay button.
 document.getElementById('avatarOverlay').onclick = async e => {
     await prepareSettings()
@@ -149,7 +143,7 @@ function updateSelectedAccount(authUser){
             username = authUser.displayName
         }
         if(authUser.uuid != null){
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://mc-heads.net/body/${authUser.uuid}/right')`
+            document.getElementById('avatarContainer').style.backgroundImage = `url('https://mc-heads.net/avatar/${authUser.uuid}/')`
         }
     }
     user_text.innerHTML = username

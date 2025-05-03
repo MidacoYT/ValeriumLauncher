@@ -7,7 +7,7 @@ const logger = LoggerUtil.getLogger('ConfigManager')
 
 const sysRoot = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME)
 
-const dataPath = path.join(sysRoot, '.helioslauncher')
+const dataPath = path.join(sysRoot, '.valerium')
 
 const launcherDir = require('@electron/remote').app.getPath('userData')
 
@@ -78,8 +78,8 @@ function resolveSelectedRAM(ram) {
 const DEFAULT_CONFIG = {
     settings: {
         game: {
-            resWidth: 1280,
-            resHeight: 720,
+            resWidth: 854,
+            resHeight: 480,
             fullscreen: false,
             autoConnect: true,
             launchDetached: true
@@ -242,7 +242,7 @@ exports.setNewsCacheDismissed = function(dismissed){
  * @returns {string} The launcher's common directory.
  */
 exports.getCommonDirectory = function(){
-    return path.join(exports.getDataDirectory(), 'common')
+    return path.join(exports.getDataDirectory())
 }
 
 /**
@@ -252,7 +252,7 @@ exports.getCommonDirectory = function(){
  * @returns {string} The launcher's instance directory.
  */
 exports.getInstanceDirectory = function(){
-    return path.join(exports.getDataDirectory(), 'instances')
+    return path.join(exports.getDataDirectory())
 }
 
 /**
@@ -524,7 +524,8 @@ function defaultJavaConfig8(ram) {
             '-XX:+UseConcMarkSweepGC',
             '-XX:+CMSIncrementalMode',
             '-XX:-UseAdaptiveSizePolicy',
-            '-Xmn128M'
+            '-Xmn128M',
+            '-Dforge.forceDisplayStencil=true'
         ],
     }
 }
@@ -540,7 +541,8 @@ function defaultJavaConfig17(ram) {
             '-XX:G1NewSizePercent=20',
             '-XX:G1ReservePercent=20',
             '-XX:MaxGCPauseMillis=50',
-            '-XX:G1HeapRegionSize=32M'
+            '-XX:G1HeapRegionSize=32M',
+            '-Dforge.forceDisplayStencil=true'
         ],
     }
 }
