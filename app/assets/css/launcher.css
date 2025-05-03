@@ -272,13 +272,9 @@ body, button {
 }
 */
 
+
+
 #welcomeImageSeal {
-    border-radius: 50%;
-    border: 2px solid #cad7e1;
-    background: rgba(1, 2, 1, 0.5);
-    height: 125px;
-    width: 125px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
     margin-bottom: 5%;
     margin-top: 10%;
 }
@@ -878,6 +874,108 @@ body, button {
  * Waiting View (waiting.ejs)                                                  *
  *                                                                             *
  ******************************************************************************/
+
+
+/* Conteneur de chargement centré */
+#loadingContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4); /* Fond noir transparent */
+    z-index: 999;
+}
+
+/* Contenu du chargement */
+#loadingContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+/* Conteneur circulaire de l'image avec contour rouge foncé */
+#letterVContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1); /* Fond transparent, pas de rouge ici */
+    border-radius: 50%;
+    border: 4px solid #8B0000; /* Contour rouge foncé */
+    box-shadow: 0 4px 20px rgba(139, 0, 0, 0.5); /* Ombre subtile rouge foncé */
+    animation: pulseContainer 2s infinite ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Image de la lettre V */
+.letterVImage {
+    width: 70px;
+    height: auto;
+    filter: drop-shadow(0 0 12px rgba(255, 99, 71, 0.6)); /* Ombre légère en rouge clair */
+    animation: pulseImage 1.5s infinite ease-in-out;
+}
+
+/* Animation de pulsation du conteneur */
+@keyframes pulseContainer {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(139, 0, 0, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 6px 30px rgba(139, 0, 0, 0.7); /* Ombre plus forte à 50% */
+    }
+}
+
+/* Animation de pulsation de l'image */
+@keyframes pulseImage {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.85;
+    }
+}
+
+/* Texte de chargement */
+#loadingText {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #d1d1d1;
+    animation: fadeInOut 2.5s infinite ease-in-out;
+}
+
+/* Animation de fondu du texte */
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Animation de "hover" sur le conteneur de la lettre V */
+#letterVContainer:hover {
+    box-shadow: 0 6px 40px rgba(255, 99, 71, 0.8); /* Ombre de survol rouge vif */
+    transform: scale(1.1);
+}
+
 
 #waitingContainer {
     position: relative;
