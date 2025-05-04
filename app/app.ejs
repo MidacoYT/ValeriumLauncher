@@ -1,6 +1,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" http-equiv="Content-Security-Policy" content="script-src 'self' 'sha256-In6B8teKZQll5heMl9bS7CESTbGvuAt3VVV86BUQBDk='"/>
+    <meta charset="utf-8" http-equiv="Content-Security-Policy" content="script-src 'self' "/>
     <title><%= lang('app.title') %></title>
     <script src="./assets/js/scripts/uicore.js"></script>
     <script src="./assets/js/scripts/uibinder.js"></script>
@@ -37,12 +37,16 @@
     <%- include('overlay') %>
     <div id="loadingContainer">
         <div id="loadingContent">
-          <div id="letterVContainer">
-            <img class="letterVImage" src="./assets/images/icon.png" alt="Chargement">
-          </div>
-          <p id="loadingText">Chargement...</p>
+            <div id="letterVContainer">
+                <img class="letterVImage" src="./assets/images/icon.png" alt="Chargement">
+            </div>
+            <div id="UpdateActionContainer">
+                <p id="UpdateAction"><%- lang('app.checkForUpdates') %></p> <!-- Texte initial -->
+            </div>
         </div>
-      </div>
-      
+    </div>
+    
+    <script src="./assets/js/scripts/autoUpdate.js"></script>
+    
 </body>
 </html>

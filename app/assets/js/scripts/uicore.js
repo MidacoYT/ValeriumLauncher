@@ -54,6 +54,7 @@ if(!isDev){
                 }
                 
                 populateSettingsUpdateInformation(info)
+                populateUpdateInformation(info)
                 break
             case 'update-downloaded':
                 loggerAutoUpdater.info('Update ' + info.version + ' ready to be installed.')
