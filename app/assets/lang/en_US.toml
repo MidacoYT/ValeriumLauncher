@@ -18,12 +18,6 @@ newsErrorFailedSpan = "Failed to Load News"
 newsErrorRetryButton = "Try Again"
 newsErrorNoneSpan = "No News"
 
-[ejs.app]
-updateAvailable = "Update Available"
-checkForUpdates = "Check for update"
-upToDate = "Launcher up to date"
-
-
 [ejs.login]
 loginCancelText = "Cancel"
 loginSubheader = "MINECRAFT LOGIN"
