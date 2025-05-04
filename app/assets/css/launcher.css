@@ -881,25 +881,19 @@ body, button {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0); /* Fond sombre avec opacité */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.4); /* Fond noir transparent */
-    z-index: 999;
+    z-index: 100;
 }
 
 /* Contenu du chargement */
 #loadingContent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     text-align: center;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    user-select: none;
 }
 
 /* Conteneur circulaire de l'image avec contour rouge foncé */
@@ -3665,7 +3659,7 @@ input:checked + .toggleSwitchSlider:before {
 /* Loading container, placed above everything. */
 #loadingContainer {
     position: absolute;
-    z-index: 400;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
